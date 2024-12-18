@@ -13,15 +13,8 @@ const playlistsData = [
   {
     name: "Anirudh",
     songs: [
-      { title: "Happy Rock", src: "./resources/music/Anirudh/Pudhu-Vellai-Mazhai.mp3" },
-      { title: "Energy", src: "./resources/music/Anirudh/Energy.mp3" },
-    ],
-  },
-  {
-    name: "Sunny Vibes",
-    songs: [
-      { title: "Sunny", src: "./resources/music/Sunny_Vibes/Sunny.mp3" },
-      { title: "Adventure", src: "./resources/music/Sunny_Vibes/Adventure.mp3" },
+      { title: "Manasilayo", src: "./resources/music/Anirudh/Manasilayo.mp3" },
+      { title: "Dheema", src: "./resources/music/Anirudh/Dheema.mp3" },
     ],
   },
   // Add more playlists as needed
