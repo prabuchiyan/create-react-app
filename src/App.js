@@ -4,7 +4,9 @@ import 'react-h5-audio-player/lib/styles.css';
 
 const CLIENT_ID = 'uzbfr1fa1nc6fbj';  // Replace with your Dropbox App's client ID
 const CLIENT_SECRET = '05nvjajmj99qbx7';  // Replace with your Dropbox App's client secret
-const REDIRECT_URI = 'http://localhost:3001/';  // Your redirect URI
+const REDIRECT_URI = 'https://create-react-app-psi-lac-43.vercel.app/';  // Your redirect URI
+//https://create-react-app-psi-lac-43.vercel.app/
+// http://localhost:3001/
 
 function App() {
   const [playlists, setPlaylists] = useState({});
