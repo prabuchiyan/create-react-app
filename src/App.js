@@ -36,10 +36,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    // Clean up any previous instance of WaveSurfer before initializing a new one
     if (wavesurferRef.current) {
       wavesurferRef.current.destroy();
     }
 
+    // Initialize WaveSurfer
     const waveSurfer = WaveSurfer.create({
       container: playerRef.current,
       waveColor: "#4b0082",
@@ -52,25 +54,45 @@ export default function App() {
       barGap: 2,
     });
 
+    // Load the current song
     if (currentPlaylist.length > 0) {
       waveSurfer.load(currentPlaylist[currentSongIndex]?.src);
     }
 
+    // Set the reference to the new waveSurfer instance
     wavesurferRef.current = waveSurfer;
 
+    // Listen for when the song is fully loaded, and play it
+    waveSurfer.on('ready', () => {
+      if (isPlaying) {
+        waveSurfer.play();  // Play the song once it's ready
+      }
+    });
+
+    // Clean up on unmount
     return () => {
-      waveSurfer.destroy();
+      if (wavesurferRef.current) {
+        wavesurferRef.current.destroy();
+      }
     };
-  }, [currentPlaylist, currentSongIndex]);
+  }, [currentPlaylist, currentSongIndex, isPlaying]);  // Re-run when currentSongIndex or isPlaying changes
 
   const handleNext = () => {
-    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % currentPlaylist.length);
+    // Go to next song, loop back to the first song if at the end of the playlist
+    setCurrentSongIndex((prevIndex) => {
+      const nextIndex = (prevIndex + 1) % currentPlaylist.length;
+      return nextIndex;
+    });
+    setIsPlaying(true); // Set to playing when moving to the next song
   };
 
   const handlePrevious = () => {
-    setCurrentSongIndex((prevIndex) =>
-      prevIndex === 0 ? currentPlaylist.length - 1 : prevIndex - 1
-    );
+    // Go to previous song, loop back to the last song if at the start of the playlist
+    setCurrentSongIndex((prevIndex) => {
+      const prevIndex1 = prevIndex === 0 ? currentPlaylist.length - 1 : prevIndex - 1;
+      return prevIndex1;
+    });
+    setIsPlaying(true); // Set to playing when moving to the previous song
   };
 
   const handlePlayPause = () => {
