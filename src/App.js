@@ -192,6 +192,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     gap: "15px",
+    flexWrap: "wrap", // Ensure buttons wrap on smaller screens
   },
   playlistButton: {
     backgroundColor: "#4b0082",
@@ -201,6 +202,9 @@ const styles = {
     padding: "10px 20px",
     cursor: "pointer",
     transition: "background-color 0.3s",
+    margin: "5px", // Add some space between buttons
+    flexBasis: "45%", // Allow buttons to take up space on smaller screens
+    minWidth: "150px", // Ensure buttons are not too small
   },
   playlist: {
     listStyleType: "none",
@@ -214,5 +218,52 @@ const styles = {
     marginBottom: "5px",
     borderRadius: "8px",
     transition: "background-color 0.3s, color 0.3s",
+  },
+  // Media Queries for responsiveness
+  "@media (max-width: 768px)": {
+    container: {
+      padding: "15px",
+    },
+    heading: {
+      fontSize: "24px",
+    },
+    nowPlaying: {
+      fontSize: "16px",
+    },
+    controlButton: {
+      fontSize: "14px",
+      padding: "8px 16px",
+    },
+    playlistButton: {
+      padding: "8px 16px",
+      fontSize: "14px",
+    },
+    song: {
+      fontSize: "14px",
+      padding: "8px",
+    },
+  },
+  "@media (max-width: 480px)": {
+    container: {
+      padding: "10px",
+    },
+    heading: {
+      fontSize: "20px",
+    },
+    nowPlaying: {
+      fontSize: "14px",
+    },
+    controlButton: {
+      fontSize: "12px",
+      padding: "6px 12px",
+    },
+    playlistButton: {
+      padding: "6px 12px",
+      fontSize: "12px",
+    },
+    song: {
+      fontSize: "12px",
+      padding: "6px",
+    },
   },
 };
