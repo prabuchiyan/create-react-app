@@ -6,7 +6,7 @@ export default function App() {
   const [playlists] = useState({
     "A. R. Rahman": [
       { id: 1, title: "Pudhu Vellai Mazhai", src: "./resources/Pudhu-Vellai-Mazhai.mp3" },
-      { id: 2, title: "Kadhal Rojave", src: "./resources/Pudhu-Vellai-Mazhai.mp3" },
+      { id: 2, title: "Kadhal Rojave", src: "./resources/Kadhal-Rojave.mp3" },
     ],
     "Energetic Beats": [
       { id: 1, title: "Energy", src: "https://www.bensound.com/bensound-music/bensound-energy.mp3" },
