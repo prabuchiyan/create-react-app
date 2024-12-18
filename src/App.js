@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
+import React, { useState, useEffect, useRef } from "react";
+import WaveSurfer from "wavesurfer.js";
 
 export default function App() {
   const [playlists] = useState({
@@ -48,6 +47,8 @@ export default function App() {
 
   const [currentPlaylist, setCurrentPlaylist] = useState("A. R. Rahman");
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const wavesurferRef = useRef(null);
+  const playerRef = useRef(null);
 
   const handleNext = () => {
     setCurrentSongIndex((prevIndex) => (prevIndex + 1) % playlists[currentPlaylist].length);
@@ -58,6 +59,29 @@ export default function App() {
       prevIndex === 0 ? playlists[currentPlaylist].length - 1 : prevIndex - 1
     );
   };
+
+  useEffect(() => {
+    if (wavesurferRef.current) {
+      wavesurferRef.current.destroy();
+    }
+    const waveSurfer = WaveSurfer.create({
+      container: playerRef.current,
+      waveColor: "#4b0082",
+      progressColor: "#ff7f50",
+      barWidth: 3,
+      height: 150,
+      responsive: true,
+      cursorColor: "#ff7f50",
+      cursorWidth: 2,
+      barGap: 2,
+    });
+    waveSurfer.load(playlists[currentPlaylist][currentSongIndex].src);
+    wavesurferRef.current = waveSurfer;
+
+    return () => {
+      waveSurfer.destroy();
+    };
+  }, [currentPlaylist, currentSongIndex]);
 
   return (
     <div style={styles.container}>
@@ -83,16 +107,30 @@ export default function App() {
       <p style={styles.nowPlaying}>
         Now Playing: {playlists[currentPlaylist][currentSongIndex].title}
       </p>
-      <AudioPlayer
-        src={playlists[currentPlaylist][currentSongIndex].src}
-        onPlay={() => console.log("Playing")}
-        onClickNext={handleNext}
-        onClickPrevious={handlePrevious}
-        onEnded={handleNext}
-        showSkipControls
-        showJumpControls={false}
-        style={styles.audioPlayer}
-      />
+
+      <div ref={playerRef} style={styles.waveform}></div>
+
+      <div style={styles.controls}>
+        <button onClick={handlePrevious} style={styles.controlButton}>
+          Prev
+        </button>
+        <button
+          onClick={() => {
+            if (wavesurferRef.current.isPlaying()) {
+              wavesurferRef.current.pause();
+            } else {
+              wavesurferRef.current.play();
+            }
+          }}
+          style={styles.controlButton}
+        >
+          {wavesurferRef.current && wavesurferRef.current.isPlaying() ? "Pause" : "Play"}
+        </button>
+        <button onClick={handleNext} style={styles.controlButton}>
+          Next
+        </button>
+      </div>
+
       <ul style={styles.playlist}>
         {playlists[currentPlaylist].map((song, index) => (
           <li
@@ -134,11 +172,11 @@ const styles = {
     fontWeight: "bold",
     marginBottom: "20px",
   },
-  audioPlayer: {
-    marginTop: "15px",
-    borderRadius: "10px",
-    backgroundColor: "#fff",
-    maxWidth: "100%",
+  waveform: {
+    width: "100%",
+    marginTop: "20px",
+    marginBottom: "20px",
+    position: "relative",
   },
   playlistSelector: {
     display: "flex",
@@ -155,6 +193,22 @@ const styles = {
     transition: "background-color 0.3s, color 0.3s",
     fontSize: "14px",
     fontWeight: "bold",
+  },
+  controls: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    marginTop: "15px",
+  },
+  controlButton: {
+    backgroundColor: "#4b0082",
+    color: "#fff",
+    border: "none",
+    borderRadius: "8px",
+    padding: "10px 20px",
+    fontSize: "16px",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
   },
   playlist: {
     listStyleType: "none",
